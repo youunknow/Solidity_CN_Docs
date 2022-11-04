@@ -366,10 +366,9 @@ code {
     });
   </script>
 <h1 id="%E4%BB%8B%E7%BB%8D%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6">介绍智能合约</h1>
-<p><a href="#a_sample_contract">一个简单的只能合约</a></p>
-<h2 id="%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6asamplecontract">一个简单的智能合约{#a_Sample_Contract}</h2>
+<h2 id="%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6span-id%22easycontract%22span">一个简单的智能合约<span id="easy_contract"></span></h2>
 <p>我们从一个基础例子开始。这个例子为变量赋值，并将其公开以供其他合约访问。如果你现在还不能理解所有内容也没关系，我们会后面会做更详细的讲解。</p>
-<h3 id="%E5%AD%98%E5%82%A8%E7%9A%84%E4%BE%8B%E5%AD%90">存储的例子</h3>
+<h3 id="%E5%AD%98%E5%82%A8%E7%9A%84%E4%BE%8B%E5%AD%90span-id%22storeexample%22span">存储的例子<span id="store_example"></span></h3>
 <pre class="hljs"><code><div>
 <span class="hljs-comment">// SPDX-License-Identifier: GPL-3.0</span>
 pragma solidity &gt;=<span class="hljs-number">0.4</span><span class="hljs-number">.16</span> &lt;<span class="hljs-number">0.9</span><span class="hljs-number">.0</span>;
@@ -406,6 +405,59 @@ contract SimpleStorage {
 <div style="background:#e9f2fa;color:#404040;padding:10px">
 &#x6240;&#x6709;&#x7684;&#x662F;&#x8BC6;&#x6807;&#x8BC6;&#x7B26;&#xFF08;&#x5408;&#x7EA6;&#x540D;&#x79F0;&#xFF0C;&#x51FD;&#x6570;&#x540D;&#xFF0C;&#x53D8;&#x91CF;&#x540D;&#xFF09;&#x90FD;&#x88AB;&#x5B58;&#x50A8;&#x4E3A;ASCII&#x5B57;&#x7B26;&#x96C6;&#x3002;&#x53EF;&#x4EE5;&#x5C06;UTF-8&#x7F16;&#x7801;&#x7684;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x5728;&#x5B57;&#x7B26;&#x4E32;&#x53D8;&#x91CF;&#x4E2D;&#x3002;
 </div>
+<br>
+<h3 id="%E5%AD%90%E8%B4%A7%E5%B8%81%E7%A4%BA%E4%BE%8B">子货币示例</h3>
+<p>下面这个合约实现了最简单的加密货币形式。这个合约只允许合约的创建人创建新货币(可能用不同的发行方案)。任何人可以相互发送货币不需要使用用户名和密码注册。你需要的全部只是一对以太坊密钥对。</p>
+<pre class="hljs"><code><div>
+<span class="hljs-comment">// SPDX-License-Identifier: GPL-3.0</span>
+pragma solidity ^<span class="hljs-number">0.8</span><span class="hljs-number">.4</span>;
+
+contract Coin {
+    <span class="hljs-comment">// The keyword "public" makes variables</span>
+    <span class="hljs-comment">// accessible from other contracts</span>
+    address <span class="hljs-keyword">public</span> minter;
+    mapping (address =&gt; uint) <span class="hljs-keyword">public</span> balances;
+
+    <span class="hljs-comment">// Events allow clients to react to specific</span>
+    <span class="hljs-comment">// contract changes you declare</span>
+    <span class="hljs-function">event <span class="hljs-title">Sent</span><span class="hljs-params">(address from, address to, uint amount)</span></span>;
+
+    <span class="hljs-comment">// Constructor code is only run when the contract</span>
+    <span class="hljs-comment">// is created</span>
+    constructor() {
+        minter = msg.sender;
+    }
+
+    <span class="hljs-comment">// Sends an amount of newly created coins to an address</span>
+    <span class="hljs-comment">// Can only be called by the contract creator</span>
+    <span class="hljs-function">function <span class="hljs-title">mint</span><span class="hljs-params">(address receiver, uint amount)</span> <span class="hljs-keyword">public</span> </span>{
+        require(msg.sender == minter);
+        balances[receiver] += amount;
+    }
+
+    <span class="hljs-comment">// Errors allow you to provide information about</span>
+    <span class="hljs-comment">// why an operation failed. They are returned</span>
+    <span class="hljs-comment">// to the caller of the function.</span>
+    <span class="hljs-function">error <span class="hljs-title">InsufficientBalance</span><span class="hljs-params">(uint requested, uint <span class="hljs-built_in">available</span>)</span></span>;
+
+    <span class="hljs-comment">// Sends an amount of existing coins</span>
+    <span class="hljs-comment">// from any caller to an address</span>
+    <span class="hljs-function">function <span class="hljs-title">send</span><span class="hljs-params">(address receiver, uint amount)</span> <span class="hljs-keyword">public</span> </span>{
+        <span class="hljs-keyword">if</span> (amount &gt; balances[msg.sender])
+            <span class="hljs-function">revert <span class="hljs-title">InsufficientBalance</span><span class="hljs-params">({
+                requested: amount,
+                <span class="hljs-built_in">available</span>: balances[msg.sender]
+            })</span></span>;
+
+        balances[msg.sender] -= amount;
+        balances[receiver] += amount;
+        <span class="hljs-function">emit <span class="hljs-title">Sent</span><span class="hljs-params">(msg.sender, receiver, amount)</span></span>;
+    }
+}
+
+</div></code></pre>
+<p>这个合约介绍一些新概念，让我们一个一个的了解它们。</p>
+<p><code>address public minter</code> 这行</p>
 
 </body>
 </html>
