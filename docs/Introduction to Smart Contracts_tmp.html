@@ -366,7 +366,8 @@ code {
     });
   </script>
 <h1 id="%E4%BB%8B%E7%BB%8D%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6">介绍智能合约</h1>
-<h2 id="%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6">一个简单的智能合约</h2>
+<p><a href="#a_sample_contract">一个简单的只能合约</a></p>
+<h2 id="%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6asamplecontract">一个简单的智能合约{#a_Sample_Contract}</h2>
 <p>我们从一个基础例子开始。这个例子为变量赋值，并将其公开以供其他合约访问。如果你现在还不能理解所有内容也没关系，我们会后面会做更详细的讲解。</p>
 <h3 id="%E5%AD%98%E5%82%A8%E7%9A%84%E4%BE%8B%E5%AD%90">存储的例子</h3>
 <pre class="hljs"><code><div>
@@ -387,7 +388,24 @@ contract SimpleStorage {
 
 </div></code></pre>
 <p>上面代码第一行，告诉我们这段代码在GPL version 3.0协议下获得许可。一个可以被编译器识别的许可说明符在源代码发布的设置中非常重要。您可以从<a href="https://spdx.org/licenses/">这里</a>查看这些协议内容。</p>
-<p><kdb>abc</kdb></p>
+<p>下面一行的意思是说这段源代码用Solidity 0.4.16版本或更高的版本编写的，但最高不超过0.9.0版本。这行代码确保这个合约不会被更高版本的编译器所编译，因为这些编译器的行为可能有所不同。<a href="./Pragma.md">Pragmas</a>是告诉编译器怎么样去处理源代码的常用指令（比如：Pragma once）。</p>
+<p>Solidity实质意义的合约是一个保存在以太坊区块链上的特定地址代码（功能）和数据（状态）的集合。
+<kbd style="color:red">unit storedData;</kbd> 这一行，声明了一个类型是uint(256位无符号整形)叫<kbd style="color:red"> storedData</kbd>状态变量。你可以认为它是一个数据库里插槽。你可以通过调用管理数据的代码来查询和变更它。在这个例子中，智能合约定义了<kbd style="color:red">set</kbd>和<kbd style="color:red">get</kbd>两个函数，用来修改或检索这个变量的值。</p>
+<p>访问当前合约的个成员(如状态变量)的时候，通常添加<kbd style="color:red">this.</kbd>前缀，你只需要直接通过成员的名字访问它。与其他一些语言不同，忽略它不仅是一个样式问题，它会导致成员访问方式完全不同，稍后会详细介绍。</p>
+<p>除了(由于以太坊构建的基础设施)允许任何人存储世界上任何人都可以访问的单个数字之外，这份智能合约还没有做太多的事情，没有任何(可行的)方式可以阻止你发布这个数字。任何人可以调用<kbd style="color:red">set</kbd>方法，用不同的值覆盖你的数字，但是这个数字仍然存在区块链的历史数据中。稍后，你可以看到如何增加访问限制，以保证只有你可以修改这个数字。</p>
+<div style="background:#e9b684;color:#fff;padding:5px;font-weight:600;">
+&#x26A0;&#xFE0F; Waring
+</div>
+<div style="background:#fdeecf;color:#404040;padding:10px">
+&#x5C0F;&#x5FC3;&#x4F7F;&#x7528;Unicode&#x6587;&#x672C;&#xFF0C;&#x90A3;&#x4E9B;&#x770B;&#x7740;&#x50CF;(&#x751A;&#x81F3;&#x662F;&#x76F8;&#x540C;&#x7684;)&#x5B57;&#x7B26;&#xFF0C;&#x53EF;&#x80FD;&#x6709;&#x4E0D;&#x540C;&#x7684;&#x7801;&#x4F4D;&#xFF0C;&#x56E0;&#x6B64;&#x88AB;&#x7F16;&#x7801;&#x4E3A;&#x4E0D;&#x540C;&#x7684;&#x81EA;&#x5DF1;&#x9635;&#x5217;&#x3002;
+</div>
+<br>
+<div style="background:#76afdb;color:#fff;padding:5px;font-weight:600">
+&#x26A0;&#xFE0F; Note
+</div>
+<div style="background:#e9f2fa;color:#404040;padding:10px">
+&#x6240;&#x6709;&#x7684;&#x662F;&#x8BC6;&#x6807;&#x8BC6;&#x7B26;&#xFF08;&#x5408;&#x7EA6;&#x540D;&#x79F0;&#xFF0C;&#x51FD;&#x6570;&#x540D;&#xFF0C;&#x53D8;&#x91CF;&#x540D;&#xFF09;&#x90FD;&#x88AB;&#x5B58;&#x50A8;&#x4E3A;ASCII&#x5B57;&#x7B26;&#x96C6;&#x3002;&#x53EF;&#x4EE5;&#x5C06;UTF-8&#x7F16;&#x7801;&#x7684;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x5728;&#x5B57;&#x7B26;&#x4E32;&#x53D8;&#x91CF;&#x4E2D;&#x3002;
+</div>
 
 </body>
 </html>
