@@ -1,13 +1,10 @@
 # 介绍智能合约
 
-[一个简单的只能合约](#a_sample_contract)
-
-
-## 一个简单的智能合约{#a_Sample_Contract}
+## 一个简单的智能合约<span id="easy_contract"></span>
 
 我们从一个基础例子开始。这个例子为变量赋值，并将其公开以供其他合约访问。如果你现在还不能理解所有内容也没关系，我们会后面会做更详细的讲解。
 
-### 存储的例子
+### 存储的例子<span id="store_example"></span>
 
 ``` C++
 
@@ -55,4 +52,63 @@ Solidity实质意义的合约是一个保存在以太坊区块链上的特定地
 所有的是识标识符（合约名称，函数名，变量名）都被存储为ASCII字符集。可以将UTF-8编码的数据存储在字符串变量中。
 </div>
 
+<br/>
 
+
+### 子货币示例
+
+下面这个合约实现了最简单的加密货币形式。这个合约只允许合约的创建人创建新货币(可能用不同的发行方案)。任何人可以相互发送货币不需要使用用户名和密码注册。你需要的全部只是一对以太坊密钥对。
+
+```C++
+
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity ^0.8.4;
+
+contract Coin {
+    // The keyword "public" makes variables
+    // accessible from other contracts
+    address public minter;
+    mapping (address => uint) public balances;
+
+    // Events allow clients to react to specific
+    // contract changes you declare
+    event Sent(address from, address to, uint amount);
+
+    // Constructor code is only run when the contract
+    // is created
+    constructor() {
+        minter = msg.sender;
+    }
+
+    // Sends an amount of newly created coins to an address
+    // Can only be called by the contract creator
+    function mint(address receiver, uint amount) public {
+        require(msg.sender == minter);
+        balances[receiver] += amount;
+    }
+
+    // Errors allow you to provide information about
+    // why an operation failed. They are returned
+    // to the caller of the function.
+    error InsufficientBalance(uint requested, uint available);
+
+    // Sends an amount of existing coins
+    // from any caller to an address
+    function send(address receiver, uint amount) public {
+        if (amount > balances[msg.sender])
+            revert InsufficientBalance({
+                requested: amount,
+                available: balances[msg.sender]
+            });
+
+        balances[msg.sender] -= amount;
+        balances[receiver] += amount;
+        emit Sent(msg.sender, receiver, amount);
+    }
+}
+
+```
+
+这个合约介绍一些新概念，让我们一个一个的了解它们。
+
+```address public minter``` 这行
