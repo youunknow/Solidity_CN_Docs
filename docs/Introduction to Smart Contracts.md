@@ -111,4 +111,56 @@ contract Coin {
 
 这个合约介绍一些新概念，让我们一个一个的了解它们。
 
-```address public minter``` 这行
+```address public minter``` 这行定义了一个[地址](./Address.md)类型的状态变量。```address```类型是一个不允许任何算数运算的160位的值。它适用于存储合约地址或者一个[外部账户](./ExternalAccounts.md)公钥的哈希。
+
+关键词```public```自动生成一个允许你从合约外部访问当前状态变量值的函数。没有这个关键词，其他合约没法访问这个变量。由编译器生成的函数代码等价于下面这段代码(暂时忽略[外部](./External.md)和[视图](./View.md)):
+
+```C++
+
+function minter() external view returns(address) {return minter;}
+
+```
+
+你可以自己添加一个像上面那样函数，但是你会获得一个同名的函数和状态变量。你不需要这么做，编译器会为你计算出来。
+
+下一行，```mapping (address => uint) public balances;``` 还是创建一个公共状态变量，但它是个更复杂的数据类型。这个[映射](./Mapping.md)类型把地址映射到一个[无符号的整形数](./UnsignedIntegers.md)。
+
+映射可以被看做是一个虚拟初始化的[哈希表](./HashTable.md)。这个表里，每个可能键从一开始就存在，并映射到一个字节表示全为0的值。然而，既不能，获得映射的所有键的列表，也不能获得所有值的列表。记录你添加到映射的内容，或者不需要的在上下文中使用它。
+
+或者更好的是，维护一个列表或使用更合适的数据类型。
+
+
+在映射情况下，由```public```关键词创建的[getter function](./GetterFunction.md)更复杂。看下面这个例子：
+
+```
+
+function balances(address account) external view returns (uint){
+    return balances[account];
+}
+
+```
+
+你可以使用上面这个函数查询一个账户的余额。
+
+```send```函数里最后一行，``` evernt Sent(address from, address to, uint amount) ``` 这行声明了一个[事件](./Event.md)。以太坊客户端(例如web应用)，可以不需太大成本，监听区块链上发出的这些事件。这些事件一发出，监听器收到参数```from```,```to```和```amonut```,从而跟踪交易成为可能。
+
+监听这些事件，你可以用下面的JavaScript代码，这段代码用web3.js创建"币"合同对象，并且任何用户接口都会从上面自动调用生成```balance```函数。
+
+
+```
+
+Coin.Sent().watch({}, '', function(error, result) {
+    if (!error) {
+        console.log("Coin transfer: " + result.args.amount +
+            " coins were sent from " + result.args.from +
+            " to " + result.args.to + ".");
+        console.log("Balances now:\n" +
+            "Sender: " + Coin.balances.call(result.args.from) +
+            "Receiver: " + Coin.balances.call(result.args.to));
+    }
+})
+
+```
+
+[构造函数](./Constructor.md)是一个特殊的函数，它在合约创建的时候被执行，且之后不能再被调用。在这种情况下，它永久存储个人创建的合约地址。
+
