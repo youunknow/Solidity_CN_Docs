@@ -18,8 +18,8 @@ Solidity是静态类型、支持继承、多库和复杂用户定义类型等特
 
 - [介绍智能合约](./Introduction%20to%20Smart%20Contracts.md)
 
-    - - 一个简单的智能合约
+    - [一个简单的智能合约](./Introduction%20to%20Smart%20Contracts.md)
 
-    - - 区块链基础
+    - [区块链基础](./BlockchainBasic.md)
 
-    - - 以太坊虚拟机 
+    - [以太坊虚拟机](./VEM.md) 

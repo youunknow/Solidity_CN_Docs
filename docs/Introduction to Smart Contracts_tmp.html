@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Introduction to Smart Contracts.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="%E4%BB%8B%E7%BB%8D%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6">介绍智能合约</h1>
+<h2 id="%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6span-id%22easycontract%22span">一个简单的智能合约<span id="easy_contract"></span></h2>
+<p>我们从一个基础例子开始。这个例子为变量赋值，并将其公开以供其他合约访问。如果你现在还不能理解所有内容也没关系，我们会后面会做更详细的讲解。</p>
+<h3 id="%E5%AD%98%E5%82%A8%E7%9A%84%E4%BE%8B%E5%AD%90span-id%22storeexample%22span">存储的例子<span id="store_example"></span></h3>
+<pre class="hljs"><code><div>
+<span class="hljs-comment">// SPDX-License-Identifier: GPL-3.0</span>
+pragma solidity &gt;=<span class="hljs-number">0.4</span><span class="hljs-number">.16</span> &lt;<span class="hljs-number">0.9</span><span class="hljs-number">.0</span>;
+
+contract SimpleStorage {
+    uint storedData;
+
+    <span class="hljs-function">function <span class="hljs-title">set</span><span class="hljs-params">(uint x)</span> <span class="hljs-keyword">public</span> </span>{
+        storedData = x;
+    }
+
+    <span class="hljs-function">function <span class="hljs-title">get</span><span class="hljs-params">()</span> <span class="hljs-keyword">public</span> view <span class="hljs-title">returns</span> <span class="hljs-params">(uint)</span> </span>{
+        <span class="hljs-keyword">return</span> storedData;
+    }
+}
+
+</div></code></pre>
+<p>上面代码第一行，告诉我们这段代码在GPL version 3.0协议下获得许可。一个可以被编译器识别的许可说明符在源代码发布的设置中非常重要。您可以从<a href="https://spdx.org/licenses/">这里</a>查看这些协议内容。</p>
+<p>下面一行的意思是说这段源代码用Solidity 0.4.16版本或更高的版本编写的，但最高不超过0.9.0版本。这行代码确保这个合约不会被更高版本的编译器所编译，因为这些编译器的行为可能有所不同。<a href="./Pragma.md">Pragmas</a>是告诉编译器怎么样去处理源代码的常用指令（比如：Pragma once）。</p>
+<p>Solidity实质意义的合约是一个保存在以太坊区块链上的特定地址代码（功能）和数据（状态）的集合。
+<kbd style="color:red">unit storedData;</kbd> 这一行，声明了一个类型是uint(256位无符号整形)叫<kbd style="color:red"> storedData</kbd>状态变量。你可以认为它是一个数据库里插槽。你可以通过调用管理数据的代码来查询和变更它。在这个例子中，智能合约定义了<kbd style="color:red">set</kbd>和<kbd style="color:red">get</kbd>两个函数，用来修改或检索这个变量的值。</p>
+<p>访问当前合约的个成员(如状态变量)的时候，通常添加<kbd style="color:red">this.</kbd>前缀，你只需要直接通过成员的名字访问它。与其他一些语言不同，忽略它不仅是一个样式问题，它会导致成员访问方式完全不同，稍后会详细介绍。</p>
+<p>除了(由于以太坊构建的基础设施)允许任何人存储世界上任何人都可以访问的单个数字之外，这份智能合约还没有做太多的事情，没有任何(可行的)方式可以阻止你发布这个数字。任何人可以调用<kbd style="color:red">set</kbd>方法，用不同的值覆盖你的数字，但是这个数字仍然存在区块链的历史数据中。稍后，你可以看到如何增加访问限制，以保证只有你可以修改这个数字。</p>
+<div style="background:#e9b684;color:#fff;padding:5px;font-weight:600;">
+&#x26A0;&#xFE0F; Waring
+</div>
+<div style="background:#fdeecf;color:#404040;padding:10px">
+&#x5C0F;&#x5FC3;&#x4F7F;&#x7528;Unicode&#x6587;&#x672C;&#xFF0C;&#x90A3;&#x4E9B;&#x770B;&#x7740;&#x50CF;(&#x751A;&#x81F3;&#x662F;&#x76F8;&#x540C;&#x7684;)&#x5B57;&#x7B26;&#xFF0C;&#x53EF;&#x80FD;&#x6709;&#x4E0D;&#x540C;&#x7684;&#x7801;&#x4F4D;&#xFF0C;&#x56E0;&#x6B64;&#x88AB;&#x7F16;&#x7801;&#x4E3A;&#x4E0D;&#x540C;&#x7684;&#x81EA;&#x5DF1;&#x9635;&#x5217;&#x3002;
+</div>
+<br>
+<div style="background:#76afdb;color:#fff;padding:5px;font-weight:600">
+&#x26A0;&#xFE0F; Note
+</div>
+<div style="background:#e9f2fa;color:#404040;padding:10px">
+&#x6240;&#x6709;&#x7684;&#x662F;&#x8BC6;&#x6807;&#x8BC6;&#x7B26;&#xFF08;&#x5408;&#x7EA6;&#x540D;&#x79F0;&#xFF0C;&#x51FD;&#x6570;&#x540D;&#xFF0C;&#x53D8;&#x91CF;&#x540D;&#xFF09;&#x90FD;&#x88AB;&#x5B58;&#x50A8;&#x4E3A;ASCII&#x5B57;&#x7B26;&#x96C6;&#x3002;&#x53EF;&#x4EE5;&#x5C06;UTF-8&#x7F16;&#x7801;&#x7684;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x5728;&#x5B57;&#x7B26;&#x4E32;&#x53D8;&#x91CF;&#x4E2D;&#x3002;
+</div>
+<br>
+<h3 id="%E5%AD%90%E8%B4%A7%E5%B8%81%E7%A4%BA%E4%BE%8B">子货币示例</h3>
+<p>下面这个合约实现了最简单的加密货币形式。这个合约只允许合约的创建人创建新货币(可能用不同的发行方案)。任何人可以相互发送货币不需要使用用户名和密码注册。你需要的全部只是一对以太坊密钥对。</p>
+<pre class="hljs"><code><div>
+<span class="hljs-comment">// SPDX-License-Identifier: GPL-3.0</span>
+pragma solidity ^<span class="hljs-number">0.8</span><span class="hljs-number">.4</span>;
+
+contract Coin {
+    <span class="hljs-comment">// The keyword "public" makes variables</span>
+    <span class="hljs-comment">// accessible from other contracts</span>
+    address <span class="hljs-keyword">public</span> minter;
+    mapping (address =&gt; uint) <span class="hljs-keyword">public</span> balances;
+
+    <span class="hljs-comment">// Events allow clients to react to specific</span>
+    <span class="hljs-comment">// contract changes you declare</span>
+    <span class="hljs-function">event <span class="hljs-title">Sent</span><span class="hljs-params">(address from, address to, uint amount)</span></span>;
+
+    <span class="hljs-comment">// Constructor code is only run when the contract</span>
+    <span class="hljs-comment">// is created</span>
+    constructor() {
+        minter = msg.sender;
+    }
+
+    <span class="hljs-comment">// Sends an amount of newly created coins to an address</span>
+    <span class="hljs-comment">// Can only be called by the contract creator</span>
+    <span class="hljs-function">function <span class="hljs-title">mint</span><span class="hljs-params">(address receiver, uint amount)</span> <span class="hljs-keyword">public</span> </span>{
+        require(msg.sender == minter);
+        balances[receiver] += amount;
+    }
+
+    <span class="hljs-comment">// Errors allow you to provide information about</span>
+    <span class="hljs-comment">// why an operation failed. They are returned</span>
+    <span class="hljs-comment">// to the caller of the function.</span>
+    <span class="hljs-function">error <span class="hljs-title">InsufficientBalance</span><span class="hljs-params">(uint requested, uint <span class="hljs-built_in">available</span>)</span></span>;
+
+    <span class="hljs-comment">// Sends an amount of existing coins</span>
+    <span class="hljs-comment">// from any caller to an address</span>
+    <span class="hljs-function">function <span class="hljs-title">send</span><span class="hljs-params">(address receiver, uint amount)</span> <span class="hljs-keyword">public</span> </span>{
+        <span class="hljs-keyword">if</span> (amount &gt; balances[msg.sender])
+            <span class="hljs-function">revert <span class="hljs-title">InsufficientBalance</span><span class="hljs-params">({
+                requested: amount,
+                <span class="hljs-built_in">available</span>: balances[msg.sender]
+            })</span></span>;
+
+        balances[msg.sender] -= amount;
+        balances[receiver] += amount;
+        <span class="hljs-function">emit <span class="hljs-title">Sent</span><span class="hljs-params">(msg.sender, receiver, amount)</span></span>;
+    }
+}
+
+</div></code></pre>
+<p>这个合约介绍一些新概念，让我们一个一个的了解它们。</p>
+<p><code>address public minter</code> 这行定义了一个<a href="./Address.md">地址</a>类型的状态变量。<code>address</code>类型是一个不允许任何算数运算的160位的值。它适用于存储合约地址或者一个<a href="./ExternalAccounts.md">外部账户</a>公钥的哈希。</p>
+<p>关键词<code>public</code>自动生成一个允许你从合约外部访问当前状态变量值的函数。没有这个关键词，其他合约没法访问这个变量。由编译器生成的函数代码等价于下面这段代码(暂时忽略<code>外部</code>和<code>视图</code>:</p>
+<pre class="hljs"><code><div>
+<span class="hljs-function">function <span class="hljs-title">minter</span><span class="hljs-params">()</span> external view <span class="hljs-title">returns</span><span class="hljs-params">(address)</span> </span>{<span class="hljs-keyword">return</span> minter;}
+
+</div></code></pre>
+<p>你可以自己添加一个像上面那样函数，但是你会获得一个同名的函数和状态变量。你不需要这么做，编译器会为你计算出来。</p>
+<p>下一行，<code>mapping (address =&gt; uint) public balances;</code> 还是创建一个公共状态变量，但它是个更复杂的数据类型。这个<a href="./Mapping.md">映射</a>类型把地址映射到一个<a href="./UnsignedIntegers.md">无符号的整形数</a>。</p>
+<p>映射可以被看做是一个虚拟初始化的<a href="https://baike.baidu.com/item/%E5%93%88%E5%B8%8C%E8%A1%A8/5981869?fr=aladdin">哈希表</a>。这个表里，每个可能键从一开始就存在，并映射到一个字节表示全为0的值。然而，既不能，获得映射的所有键的列表，也不能获得所有值的列表。记录你添加到映射的内容，或者不需要的在上下文中使用它。</p>
+<p>或者更好的是，维护一个列表或使用更合适的数据类型。</p>
+<p>在映射情况下，由<code>public</code>关键词创建的<a href="./GetterFunction.md">getter function</a>更复杂。看下面这个例子：</p>
+<pre class="hljs"><code><div>
+function balances(address account) external view returns (uint){
+    return balances[account];
+}
+
+</div></code></pre>
+<p>你可以使用上面这个函数查询一个账户的余额。</p>
+<p><code>send</code>函数里最后一行，<code>evernt Sent(address from, address to, uint amount)</code> 这行声明了一个<a href="./Event.md">事件</a>。以太坊客户端(例如web应用)，可以不需太大成本，监听区块链上发出的这些事件。这些事件一发出，监听器收到参数<code>from</code>,<code>to</code>和<code>amonut</code>,从而跟踪交易成为可能。</p>
+<p>监听这些事件，你可以用下面的JavaScript代码，这段代码用<a href="https://github.com/web3/web3.js">web3.js</a>创建&quot;币&quot;合同对象，并且任何用户接口都会从上面自动调用生成<code>balance</code>函数。</p>
+<pre class="hljs"><code><div>
+Coin.Sent().watch({}, '', function(error, result) {
+    if (!error) {
+        console.log(&quot;Coin transfer: &quot; + result.args.amount +
+            &quot; coins were sent from &quot; + result.args.from +
+            &quot; to &quot; + result.args.to + &quot;.&quot;);
+        console.log(&quot;Balances now:\n&quot; +
+            &quot;Sender: &quot; + Coin.balances.call(result.args.from) +
+            &quot;Receiver: &quot; + Coin.balances.call(result.args.to));
+    }
+})
+
+</div></code></pre>
+<p><a href="./Constructor.md">构造函数</a>是一个特殊的函数，它在合约创建的时候被执行，且之后不能再被调用。在这个例子中，它永久存储创建这个合约人的地址。变量<code>msg</code>（<code>tx</code>和<code>block</code>一样）是一个特殊的全局变量，包含允许访问区块链的属性。<code>msg.sender</code> 始终是当前(外部)函数调用的地址。</p>
+<p>这些组成合约的函数，和那些用户与合约可以调用的函数是<code>mint</code>和<code>send</code>。</p>
+<p><code>mint</code>函数向另外一个地址发送最新铸造的“币”数量。这个<a href="./Require.md">require</a>函数定义如果不满足条件的情况下恢复所有更改的条件。在这个例子中，<code>require(msg.sender == minter);</code>确保只有合约的创建人才能调用<code>mint</code>函数。通常情况下，合约创建人可以按照他们的意愿铸造任意多个tokens，但在某种程度上，这会导致“溢出(overflow)”的现象。需要注意的是，因为默认的<a href="./CheckedArithmetic.md">检查算法</a>，如果表达式<code>balances[receiver]+=amount</code>溢出，交易会被退回。例如：当<code>balances[receiver]+amount</code> 任意精度计算中大于 uint的最大值(2**256-1）的时候。在函数<code>send</code>的对账单balances[receiver]+=amount里也一样。</p>
+<p><a href="./Errors.md">Errors</a>允许你给调用者提供更多关于一个条件或操作失败原因的信息。<a href="./Errors.md">Errors</a>通常和<a href="./Revert.md">revert 语句</a>在一起使用。<code>revert</code>语句无条件终止并恢复所有和<code>require</code>函数一样的变更，而且他还允许你提供一个错误的名字和附加你想要提供给调用者(并最终提供给前端程序或块资源管理器)的数据，以便失败更容易被调试或对其做出反应。</p>
+<p>任何(已经有&quot;币&quot;)的人可以使用<code>send</code>函数把“币”发给另外一个人。如果这个发送者没有足够的“币”去发送，<code>if</code>条件将计算为True。<code>revert</code>会导致操作失败，同时使用<code>InsufficientBalance</code>错误向发送者提供错误详细信息。</p>
+<br>
+<div style="background:#76afdb;color:#fff;padding:5px;font-weight:600">
+&#x26A0;&#xFE0F; Note
+</div>
+<div style="background:#e9f2fa;color:#404040;padding:10px">
+&#x5982;&#x679C;&#x4F60;&#x4F7F;&#x7528;&#x667A;&#x80FD;&#x5408;&#x7EA6;&#x5411;&#x4E00;&#x4E2A;&#x5730;&#x5740;&#x53D1;&#x9001;&quot;&#x5E01;&quot;&#xFF0C;&#x5F53;&#x4F60;&#x5728;&#x533A;&#x5757;&#x94FE;&#x7BA1;&#x7406;&#x5668;&#x4E0A;&#x67E5;&#x627E;&#x8FD9;&#x4E2A;&#x5730;&#x5740;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F60;&#x4F1A;&#x4E00;&#x65E0;&#x6240;&#x83B7;&#xFF0C;&#x56E0;&#x4E3A;&#x4F60;&#x53D1;&#x5E01;&#x548C;&#x8C03;&#x6574;&#x4F59;&#x989D;&#x7684;&#x8FD9;&#x6761;&#x8BB0;&#x5F55;&#x4EC5;&#x88AB;&#x5B58;&#x50A8;&#x5728;&#x8FD9;&#x4E2A;&#x7279;&#x5B9A;&quot;&#x5E01;&quot;&#x5408;&#x540C;&#x7684;&#x6570;&#x636E;&#x533A;&#x3002;&#x901A;&#x8FC7;&#x4F7F;&#x7528;&#x4E8B;&#x4EF6;&#xFF0C;&#x4F60;&#x53EF;&#x4EE5;&#x521B;&#x5EFA;&#x7231;&#x4F60;&#x4E00;&#x4E2A;&#x533A;&#x5757;&#x94FE;&#x7BA1;&#x7406;&#x5668;&#xFF0C;&#x7528;&#x6765;&#x8DDF;&#x8E2A;&#x4EA4;&#x6613;&#x548C;&#x4F60;&#x65B0;&quot;&#x5E01;&quot;&#x7684;&#x4F59;&#x989D;&#xFF0C;&#x4F46;&#x662F;&#x4F60;&#x5FC5;&#x987B;&#x68C0;&#x67E5;&#x201C;&#x5E01;&#x201D;&#x5408;&#x7EA6;&#x5730;&#x5740;&#x800C;&#x4E0D;&#x662F;&#x8FD9;&#x4E2A;&#x201C;&#x5E01;&#x201D;&#x6240;&#x6709;&#x8005;&#x7684;&#x5730;&#x5740;&#x3002;
+</div>
+
+</body>
+</html>
