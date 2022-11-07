@@ -1,0 +1,62 @@
+# 大括号语言
+
+大括号或大括号编程语言具有使用'{'和'}'字符定义语句区块的语法。这个语法源于BCPL(1966),随着C语言变得广为流行。许多括号语言源自于C或受到C语言的强烈影响。大括号语言的例子包括这些:
+
+- ABCL/c+
+- Alef
+- AWK
+- B
+- bc
+- BCPL
+- Ballerina
+- C – developed circa 1970 at Bell Labs
+- C++
+- C#
+- Ceylon
+- ChucK – audio programming language
+- Cilk – concurrent C for multithreaded parallel programming
+- Cyclone – a safer C variant
+- D
+- Dart
+- DASL – based on Java
+- E
+- eC
+- ECMAScript
+- ActionScript
+- ECMAScript for XML
+- JavaScript
+- JScript
+- TypeScript
+- GLSL
+- Go (Golang)
+- HLSL
+- ICI
+- Java
+- Processing
+- Groovy
+- Join Java
+- Kotlin
+- Tea
+- X10
+- Limbo
+- LPC
+- MEL
+- Nemerle 
+- Objective-C
+- PCASTL
+- Perl
+- PHP
+- Pico
+- Pike
+- PowerShell
+- R
+- Rust
+- S-Lang
+- Scala (curly-braces optional)
+- sed
+- Solidity
+- SuperCollider
+- Swift
+- UnrealScript
+- Yorick
+- YASS
