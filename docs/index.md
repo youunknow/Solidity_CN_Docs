@@ -23,3 +23,25 @@ Solidity是静态类型、支持继承、多库和复杂用户定义类型等特
     - [区块链基础](./BlockchainBasic.md)
 
     - [以太坊虚拟机](./EVM.md) 
+
+- [安装Solidity编译器](./Installing_the_Solidity_Compiler.md)
+
+    - [版本控制](./Installing_the_Solidity_Compiler.md)
+
+    - [Remix](./Installing_the_Solidity_Compiler.md)
+
+    - [npm/Node.js](./Installing_the_Solidity_Compiler.md)
+
+    - [Docker](./Installing_the_Solidity_Compiler.md)
+
+    - [Linux包](./Installing_the_Solidity_Compiler.md)
+
+    - [MacOs包](./Installing_the_Solidity_Compiler.md)
+
+    - [静态二进制](./Installing_the_Solidity_Compiler.md)
+
+    - [CMake 选项](./Installing_the_Solidity_Compiler.md)
+
+    - [详细的版本字符串](./Installing_the_Solidity_Compiler.md)
+
+    - [关于版本控制的重要信息](./Installing_the_Solidity_Compiler.md)
